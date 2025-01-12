@@ -1,1 +1,1 @@
-# farsi
+# fython
