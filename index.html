@@ -1,20 +1,25 @@
-<!-- In the name of God -->
 <!DOCTYPE html>
 <html lang="fa">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>فایتون</title>
-    <link rel="stylesheet" href="style.css">   
+    <title>Python Code Runner</title>
+    <script src="https://cdn.jsdelivr.net/pyodide/v0.22.1/full/pyodide.js"></script>
+    <style>
+        #output {
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin-top: 10px;
+        }
+    </style>
 </head>
 <body>
-    <div id="editor">
-        <textarea name="code" placeholder="کد خود را اینجا بنویسید ..." id="code-editor"></textarea>
-    </div>
-    <button id="run-code">اجرای کد</button>
+    <h1>اجرای کد پایتون در مرورگر</h1>
+    <textarea id="code" rows="10" cols="50" placeholder="کد پایتون خود را اینجا بنویسید"></textarea>
+    <br>
+    <button onclick="runPythonCode()">اجرای کد</button>
     <div id="output"></div>
-    <script src="https://cdn.jsdelivr.net/npm/skulpt"></script>
-    <script src="https://cdn.jsdelivr.net/npm/skulpt/dist/skulpt.min.js"></script>
-    <script src="main.js"></script>
+
+    <script src="script.js"></script>
 </body>
 </html>
