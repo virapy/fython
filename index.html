@@ -1,24 +1,38 @@
 <!DOCTYPE html>
-<html lang="fa">
+<html lang="fa" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Python Code Runner</title>
+    <title>فایتون - پایتون فارسی</title>
     <script src="https://cdn.jsdelivr.net/pyodide/v0.22.1/full/pyodide.js"></script>
-    <style>
-        #output {
-            border: 1px solid #ccc;
-            padding: 10px;
-            margin-top: 10px;
-        }
-    </style>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
 </head>
 <body>
-    <h1>اجرای کد پایتون در مرورگر</h1>
-    <textarea id="code" rows="10" cols="50" placeholder="کد پایتون خود را اینجا بنویسید"></textarea>
-    <br>
-    <button onclick="runPythonCode()">اجرای کد</button>
-    <div id="output"></div>
+    <header class="header">
+        <div class="header-left">
+            <button id="theme-toggle" onclick="toggleTheme()">
+                <i class="fas fa-adjust"></i>
+            </button>
+            <button id="font-size-toggle" onclick="toggleFontSize()">
+                <i class="fas fa-text-height"></i>
+            </button>
+        </div>
+        <div class="header-center">
+            <h1>فایتون - پایتون فارسی</h1>
+        </div>
+        <div class="header-right">
+            <button id="run-code" onclick="runPythonCode()">
+                <i class="fas fa-play"></i>
+            </button>
+        </div>
+    </header>
+
+    <div class="editor-container">
+        <textarea id="code" class="code-editor" rows="15" placeholder="کد پایتون خود را اینجا بنویسید" oninput="replaceKeywords()"></textarea>
+        <div id="output" class="code-output"></div>
+    </div>
 
     <script src="script.js"></script>
 </body>
