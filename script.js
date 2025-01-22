@@ -2,7 +2,7 @@ const translations = {
 	"keywords": {
 		"اگر ": "if ",
 		"دیگر ": "elif ",
-		"وگرنه ": "else ",
+		"وگرنه": "else",
 		"برای ": "for ",
 		"در ": "in ",
 		"یا ": "or ",

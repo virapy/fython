@@ -52,14 +52,14 @@ body {
     padding: 15px;
     font-family: 'Courier New', monospace;
     font-weight: 800;
-    font-size: 20px;
+    font-size: 22px;
     border-radius: 4px;
     line-height: 1.5;
     resize: none;
     box-sizing: border-box;
 }
 .code-output {
-    margin: 10px 15px 0 15px;
+    margin: 10px 20px 0 20px;
     padding: 15px;
     background-color: #252526;
     color: #d4d4d4;
