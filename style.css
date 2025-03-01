@@ -1,113 +1,206 @@
-body {
-    margin: 0;
-    font-family: 'IRANSans', 'Courier New', Courier, monospace;
-    background-color: #282c34;
+body { font-family: Tahoma, sans-serif; background: #1e1e1e; color: white; text-align: center; padding: 20px; }
+#editor-container { max-width: 800px; margin: 20px auto; text-align: right; }
+.CodeMirror {
+    
+    
+    position: relative;
+    overflow: hidden;
+    height: 400px;
+    direction: rtl;
+    text-align: right;
+    font-size: 20px;
+    background: #1e1e1e;
     color: #abb2bf;
-    display: flex;
-    flex-direction: column;
-    height: 100vh;
+    border-radius: 8px;
+    border: 1px solid #3e4451;
 }
-.header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px 20px;
-    background-color: #21252b;
-    color: #fff;
-    border-bottom: 1px solid #444;
+
+/* رنگ‌بندی برای حالت سفارشی */
+.cm-keyword { color: #c678dd !important; font-weight: bold; } /* صورتی */
+.cm-builtin { color: #56b6c2 !important; } /* آبی فیروزه‌ای */
+.cm-atom { color: #d19a66 !important; } /* نارنجی */
+.cm-number { color: #e06c75 !important; } /* قرمز */
+.cm-string { color: #98c379 !important; } /* سبز */
+.cm-comment { color: #7f848e !important; font-style: italic; } /* خاکستری */
+.cm-variable { color: #e5c07b !important; } /* زرد */
+
+
+.CodeMirror-lines {
+    padding: 12px 0 !important;
 }
-.header-left button, .header-right button {
-    background: none;
-    border: none;
-    cursor: pointer;
-    color: #fff;
-    font-size: 1.2em;
+
+.CodeMirror-gutter-filler {
+    display: none !important;
 }
-.header-left button i, .header-right button i {
-    margin: 0 10px;
+
+.CodeMirror pre.CodeMirror-line,
+.CodeMirror pre.CodeMirror-line-like {
+    padding: 0 4px !important;
 }
-.header-center h1 {
+
+.CodeMirror-gutters {
+    direction: rtl; /* تنظیم جهت راست‌به‌چپ */
+    text-align: right; /* تراز متن شماره خطوط */
+    border-left: 1px solid rgb(62, 68, 81) !important;
+    border-right: none !important;
+    background: #1e1d1d;
+}
+.CodeMirror-linenumber {
+    color: #ffeb7c;
+    text-align: right !important;
+    direction: rtl;
+    padding-right: 5px;
+    padding-left: 0;
+    display: block;
+    white-space: nowrap;
+    left: auto !important;
+    right: -35px !important;
+}
+
+.CodeMirror-gutter .CodeMirror-linenumbers {
+    padding: 8px;
+    min-width: 40px;
+    max-width: max-content;
     margin: 0;
-    font-size: 1.8em;
 }
 
-.fas.fa-play {
-    color: rgb(0, 187, 0);
-    font-size: 2rem;
+/*TODO*/
+.CodeMirror-guttermarker {
+    color: #ffffff;
 }
 
-.editor-container {
-    display: flex;
-    flex-direction: column;
-    padding: 20px;
-    flex-grow: 1;
-    box-sizing: border-box;
+.CodeMirror-gutter .CodeMirror-linenumbers {
+    padding: 8px;
+    min-width: 40px;
+    max-width: max-content;
+    margin: 0;
 }
-.code-editor {
-    width: 100%;
-    height: calc(100vh - 300px);
-    background-color: #1e1e1e;
-    color: #d4d4d4;
-    border: 1px solid #ccc;
-    padding: 15px;
-    font-family: 'Courier New', monospace;
-    font-weight: 800;
-    font-size: 22px;
-    border-radius: 4px;
-    line-height: 1.5;
-    resize: none;
-    box-sizing: border-box;
+/* Pointer */
+.CodeMirror-cursor { 
+    border-right: 2px solid #ffcc00 !important;
+    border-left: none;
 }
-.code-output {
-    margin: 10px 20px 0 20px;
-    padding: 15px;
-    background-color: #252526;
-    color: #d4d4d4;
-    border: 1px solid #ccc;
-    height: 200px;
-    font-weight: 600;
-    font-size: 18px;
-    overflow-y: auto;
-    border-radius: 4px;
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    box-sizing: border-box;
+
+.CodeMirror div.CodeMirror-secondarycursor {
+    border-right: 2px solid #f7cf30 !important;
+    border-left: none;
 }
-textarea#code::-webkit-scrollbar, 
-#output::-webkit-scrollbar {
+
+.CodeMirror-hscrollbar {
+    overflow-x: hidden !important;
+}
+
+.CodeMirror-vscrollbar {
+    overflow-y: hidden !important;
+}
+
+.CodeMirror-scrollbar-filler {
+    display: none !important;
+}
+
+.CodeMirror-sizer {
+    margin-left: 0 !important;
+    margin-right: 50px !important;
+}
+
+.CodeMirror-gutter-wrapper {
+    left: auto !important;
+    right: 0 !important; /* قرارگیری درست شماره خطوط */
+}
+
+div.CodeMirror-dragcursors {
+    visibility: visible;
+}
+
+/* تغییر اندازه اسکرول‌بار */
+.CodeMirror-scroll::-webkit-scrollbar {
     width: 10px;
+    height: 10px; /* برای اسکرول افقی */
 }
 
-textarea#code::-webkit-scrollbar-track, 
-#output::-webkit-scrollbar-track {
-    background: #2e2e2e;
+.CodeMirror-selected {
+    background: #2e2e2e !important;
+}
+
+.CodeMirror-line::selection,
+.CodeMirror-line>span::selection,
+.CodeMirror-line>span>span::selection {
+background: #2e2e2e !important;
+}
+
+/* پس‌زمینه‌ی اسکرول‌بار */
+.CodeMirror-scroll::-webkit-scrollbar-track {
+    background: #707070;
     border-radius: 5px;
 }
 
-textarea#code::-webkit-scrollbar-thumb, 
-#output::-webkit-scrollbar-thumb {
+/* استایل دسته‌ی اسکرول‌بار */
+.CodeMirror-scroll::-webkit-scrollbar-thumb {
     background-color: #5a5a5a;
     border-radius: 5px;
     border: 2px solid #2e2e2e;
 }
 
-textarea#code::-webkit-scrollbar-thumb:hover, 
-#output::-webkit-scrollbar-thumb:hover {
+/* تغییر رنگ در حالت هاور */
+.CodeMirror-scroll::-webkit-scrollbar-thumb:hover {
     background-color: #888;
 }
 
-.keyword { color: #c678dd; font-weight: bold; }
-.function { color: #61afef; }
-.string { color: #98c379; }
+/* اسکرول‌بار در فایرفاکس */
+.CodeMirror-scroll {
+    scrollbar-color: #ffcc00  #2e2e2e;
+    scrollbar-width: thin;
+    scroll-behavior: auto;
+    padding-bottom: 20px; /* بالا آوردن انتهای اسکرول */
+    position: relative;
+}
 
-@media (max-width: 768px) {
-    .header {
-        flex-direction: column;
-        align-items: flex-start;
-    }
-    .code-editor {
-        height: calc(100vh - 350px);
-    }
+.editor-container {
+    width: 100%;
+    max-width: 800px;
+    margin: auto;
+    background: #282c34;
+    padding: 10px;
+    border-radius: 10px;
+    border: 1px solid #3e4451;
+}
+.toolbar {
+    display: flex;
+    justify-content: space-between;
+    background: #3e4451;
+    padding: 10px;
+    border-radius: 5px;
+}
+.editor-wrapper {
+    position: relative;
+    border: 1px solid #3e4451;
+    border-radius: 5px;
+    overflow: hidden;
+    margin-top: 10px;
+}
+.CodeMirror {
+    height: calc(100vh - 340px);
+    direction: rtl;
+    text-align: right;
+}
+.CodeMirror-gutters {
+    background: #1e1e1e;
+    border-left: none;
+    border-right: 1px solid #3e4451;
+    text-align: right;
+}
+.CodeMirror-linenumber {
+    color: #ffeb7c;
+}
+.output-container {
+    direction: rtl;
+    text-align: right;
+    font-size: 20px;
+    margin-top: 10px;
+    background: #222;
+    padding: 24px;
+    border-radius: 5px;
+    height: 150px;
+    overflow-y: auto;
+    border: 1px solid #3e4451;
 }
