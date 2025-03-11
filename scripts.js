@@ -1,13 +1,58 @@
 let pyodide = null;
+let pyodideReady = false;
+
+// بارگذاری Pyodide به صورت Lazy
+async function loadPyodideOnce() {
+    if (!pyodideReady) {
+        pyodide = await loadPyodide();
+        pyodideReady = true;
+    }
+}
+
+async function initializePyodide() {
+    pyodide = await loadPyodide({
+        indexURL: "https://cdn.jsdelivr.net/pyodide/v0.23.4/full/",
+        packages: ["numpy", "pandas"]  // فقط پکیج‌های مورد نیاز
+    });
+    pyodideReady = true;
+}
+
+
+
+function convertLineNumbersToPersian() {
+    setTimeout(() => {
+        document.querySelectorAll(".CodeMirror-linenumber").forEach(el => {
+            el.textContent = toPersianDigits(el.textContent.trim());
+        });
+    }, 10);
+}
+
+
 var editor = CodeMirror.fromTextArea(document.getElementById("editor"), {
     mode: "farsi-python",
     lineNumbers: true,
     matchBrackets: true,
     styleActiveLine: true,
+    autoCloseBrackets: true,
     rtlMoveVisually: true,
     gutters: ["CodeMirror-linenumbers"],
     lineWrapping: true,
 });
+
+editor.on("renderLine", function (cm, line, elt) {
+    convertLineNumbersToPersian();
+});
+
+
+editor.on("keydown", function(cm, event) {
+    if (event.key === "Tab") {
+        setTimeout(() => {
+            cm.refresh();  // ← بازسازی ادیتور برای اعمال صحیح تغییرات
+        }, 0);
+    }
+});
+
+setTimeout(convertLineNumbersToPersian, 1);
 
 function toPersianDigits(num) {
     const persianDigits = ['۰','۱','۲','۳','۴','۵','۶','۷','۸','۹'];
@@ -106,6 +151,15 @@ function replaceKeywords() {
     }
 
     let code = editor.getValue();
+    let strings = [];
+    let index = 0;
+
+    // استخراج عبارات داخل کوتیشن و جایگذاری آن‌ها با توکن
+    code = code.replace(/(["'])(?:(?=(\\?))\2.)*?\1/g, match => {
+        strings.push(match);
+        return `__STR${index++}__`;
+    });
+    
 
     const regexPatterns = [
         /(?:^|[\s\(\){}:])(و|همچون|تایید|ناهمگام|منتظر|شکستن|حالت|کلاس|ادامه|تعریف|حذف|دیگر|وگرنه|استثنا|درنهایت|برای|از|سراسری|اگر|وارد|در|هست|لاندا|تطابق|نه|یا|عبور|دفع|بازگرداندن|تلاش|تا|با|بازده)(?=$|[\s\(\){}:])/gu,
@@ -123,33 +177,32 @@ function replaceKeywords() {
     regexPatterns.forEach(pattern => {
         code = code.replace(pattern, match => translations.get(match) || match);
     });
-
     // **تبدیل اعداد فارسی به انگلیسی**
     code = toEnglishDigits(code);
+
+    code = code.replace(/__STR(\d+)__/g, (match, num) => strings[num]);
 
     console.log(code); // برای بررسی خروجی ترجمه‌شده
     return code;
 }
 
-let pyodideReady = false;
-async function loadPyodideOnce() {
-    if (!pyodideReady) {
-        pyodide = await loadPyodide();
-        pyodideReady = true;
-    }
-}
+
+
 
 async function runCode() {
-    if (!pyodide) {
-        await loadPyodideOnce();
-    }
     const outputElement = document.getElementById('output');
     outputElement.innerHTML = "در حال اجرا...";
+    
+    if (!pyodideReady) {
+        await loadPyodideOnce();
+    }
+    
     let code = replaceKeywords();
     if (!code.trim()) {
         outputElement.innerHTML = "<pre style='color: red;'>خطایی رخ داده است: کد خالی است.</pre>";
         return;
     }
+
     try {
         pyodide.runPython('import sys\nimport io\nsys.stdout = io.StringIO()\nsys.stderr = io.StringIO()');
         await pyodide.runPythonAsync(code);
@@ -163,3 +216,29 @@ async function runCode() {
         outputElement.innerHTML = `<pre style="color: red;">خطا: ${error.message}</pre>`;
     }
 }
+
+
+// async function runCode() {
+//     if (!pyodide) {
+//         await loadPyodideOnce();
+//     }
+//     const outputElement = document.getElementById('output');
+//     outputElement.innerHTML = "در حال اجرا...";
+//     let code = replaceKeywords();
+//     if (!code.trim()) {
+//         outputElement.innerHTML = "<pre style='color: red;'>خطایی رخ داده است: کد خالی است.</pre>";
+//         return;
+//     }
+//     try {
+//         pyodide.runPython('import sys\nimport io\nsys.stdout = io.StringIO()\nsys.stderr = io.StringIO()');
+//         await pyodide.runPythonAsync(code);
+//         const stdout = pyodide.runPython("sys.stdout.getvalue()");
+//         const stderr = pyodide.runPython("sys.stderr.getvalue()");
+//         outputElement.innerHTML = `<pre>${stdout}</pre>`;
+//         if (stderr) {
+//             outputElement.innerHTML += `<pre style="color: red;">${stderr}</pre>`;
+//         }
+//     } catch (error) {
+//         outputElement.innerHTML = `<pre style="color: red;">خطا: ${error.message}</pre>`;
+//     }
+// }
