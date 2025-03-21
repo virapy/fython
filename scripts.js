@@ -187,6 +187,44 @@ function replaceKeywords() {
 }
 
 
+function replacePersianComma(code) {
+    const stringPattern = /(["'])(?:(?=(\\?))\2.)*?\1/g;
+    let matches = code.match(stringPattern) || [];
+
+
+    let placeholders = {};
+    matches.forEach((str, i) => {
+        let key = `@@${i}@@`;
+        placeholders[key] = str;
+        code = code.replace(str, key);
+    });
+
+    code = code.replace(/،/g, ',');
+
+    Object.keys(placeholders).forEach(key => {
+        code = code.replace(key, placeholders[key]);
+    });
+
+    return code;
+}
+
+//TODO
+function convertPersianFString(code) {
+    // to F-String ف -> f
+    code =  code.replace(/(?<!["'])ف(?=["'])/g, "f");
+
+    // to change Unicode ی -> u
+    code = code.replace(/(?<!["'])ی(?=["'])/g, "u");
+
+    // to change RegEx ر -> r
+    code = code.replace(/(?<!["'])ر(?=["'])/g, "r");
+
+    // to change Binary ب -> b
+    code = code.replace(/(?<!["'])ب(?=["'])/g, "b");
+
+    return code;
+}
+
 
 
 async function runCode() {
@@ -198,6 +236,9 @@ async function runCode() {
     }
     
     let code = replaceKeywords();
+    code = replacePersianComma(code);
+    code = convertPersianFString(code);
+    
     if (!code.trim()) {
         outputElement.innerHTML = "<pre style='color: red;'>خطایی رخ داده است: کد خالی است.</pre>";
         return;
